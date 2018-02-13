@@ -5,9 +5,21 @@ import urllib.request
 import requests
 from io import BytesIO
 
+from urllib.parse import urljoin
+
 from bs4 import BeautifulSoup
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import *
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+import time, re, collections, shutil, os, sys, zipfile, xlrd, threading
+
 
 class log_printer():
     def __init__(self):
@@ -30,10 +42,38 @@ class log_printer():
 class mainScraper():
     def __init__(self):
         self.base_url = "https://www.walmart.com/cp/womens-clothing-apparel/133162"
+
         self.total_data = []
 
     def startScraping(self):
-        pass
+        # html = download(self.base_url)
+        # print(html)
+        # soup = BeautifulSoup(html, "html.parser")
+        #
+        # rows = soup.select("ul.slider-list")
+        # sub_urls_1 = []
+        #
+        # for i, row in enumerate(rows):
+        #     if i in [1, 2]:
+        #         cols = row.select("div.TempoCategoryTile-tile")
+        #         for j, col in enumerate(cols):
+        #             # print(col.get('href'))
+        #             print(col.text)
+        #             # sub_urls_1.append()
+
+        # driver = webdriver.PhantomJS('WebDriver/phantomjs.exe')
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument('--disable-gpu')  # Last I checked this was necessary.
+        driver = webdriver.Chrome(chrome_options=chrome_options, executable_path='WebDriver/chromedriver.exe')
+        driver.maximize_window()
+        driver.get(self.base_url)
+
+        print(driver.page_source)
+
+        links = driver.find_elements_by_css_selector("a.TempoCategoryTile-tile-overlay")
+        print(len(links))
+
 
 
 
@@ -60,5 +100,5 @@ def download(url, num_retries=3):
     return html
 
 if __name__ == '__main__':
-    html = download("https://www.walmart.com/cp/womens-clothing-apparel/133162")
-    print(html)
+    app = mainScraper()
+    app.startScraping()
