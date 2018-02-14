@@ -61,13 +61,7 @@ class mainScraper():
         #             print(col.text)
         #             # sub_urls_1.append()
 
-        # driver = webdriver.PhantomJS('WebDriver/phantomjs.exe')
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument('--disable-gpu')  # Last I checked this was necessary.
-        driver = webdriver.Chrome(chrome_options=chrome_options, executable_path='WebDriver/chromedriver.exe')
-        driver.maximize_window()
-        driver.get(self.base_url)
+
 
         print(driver.page_source)
 
